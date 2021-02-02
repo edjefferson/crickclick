@@ -1,38 +1,530 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+  padding: 0;
+
+  margin: 0;
+  font-family: "Dosis";
+  font-weight: bold;
+}
+
+#resetgame {
+  margin-top: 1em;
+}
+
+#titlebar {
+  width: 100%;
+  height: 2em;
+  text-align: center;
+  font-weight: bold;
+}
+
+#feedbackbox{
+  position:absolute;
+  top:0;
+  padding-top: 0.5em;
+  font-size: 4em;
+  background-color:red;
+  color: white;
+  height: 20vw;
+  width: 100%;
+  z-index: 10;
+  opacity: 0.7;
+  text-align:center;
+  display: none;
+}
+
+#sixbox {
+  position:absolute;
+  top:0;
+  padding-top: 0.5em;
+  font-size: 2em;
+  background-color:yellow;
+  color: black;
+  height: 20vw;
+  width: 100%;
+  z-index: 10;
+  opacity: 0.7;
+  text-align:center;
+  display: none;
+}
+
+.clicksix {
+  display: inline-block;
+  font-size: 1em;
+
+  margin-bottom: 0.1em;
+  padding: 0.25em 2em;
+}
+
+#playarea {
+  position: relative;
+  width:100%;
+  padding: 0;
+  margin:0;
+}
+
+#tabs {
+  width: 100%;
+  background-color: black;
+  color: white;
+  height: 17em;
+}
+
+#tabselect {
+  width: 100%;
+  height: 2em;
+}
+
+#tabcontainer{
+  height: 16em;
+  position: relative;
+}
+
+.tselectb {
+  background-color: darkslategrey;
+  display: block;
+  float: left;
+  width: 25%;
+  padding-top: 0.3em;
+  height: 1.6em;
+  text-align: center;
+}
+.selectedtab {
+  background-color: black;
+}
+#timercontainer{
+  position: relative;
+  width:100%;
+  height: 2em;
+  display: block;
+}
+#timer {
+    position: relative;
+
+  width:100%;
+  height: 1em;
+  top:0;
+  left:0;
+  border: 1px white solid;
+
+}
+
+#timerbar {
+  height: 100%;
+  width: 0%;
+  background-color: black;
+}
+
+#timerframe {
+  position: absolute;
+  top: 0;
+  height: 1em;
+  width: 100%;
+  border: 1px black solid;
+
+}
+
+
+#scores {
+  background-color: black;
+  color: white;
+
+  margin-bottom: 2em;
+}
+
+#latest-update{
+  font-size: 1.5em;
+  width: auto;
+
+}
+
+#history {
+  padding-top: 1em;
+  color: hsl(0, 0%, 50%);
+  width: auto;
+}
+
+.tab {
+  position: absolute;
+  left: 0%;
+  width: 99%;
+  margin: 1em;
+  margin:0;
+  top: 2em;
+  padding:0;
+  padding-left: 1%;
+  overflow: hidden;
+  color: white;
+  height: 11em;
+}
+#commentary {
+  
+  overflow-y: scroll;
+
+}
+#overs{
+  text-align: center;
+}
+#clickarea {
+  position:absolute;
+  z-index: 100;
+  top: 0;
+  width: 90%;
+  top: 0;
+  left: 5%;
+  height: 15em;
+  margin:0;
+  padding: 0;
+}
+
+#highscores {
+  
+  border: 1px white solid;
+  width: 20%;
+
+}
+
+.highscore {
+  text-align: center;
+  font-weight: bold;
+}
+.highscorenum {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+#upgrades{
+  position: absolute;
+  left: 64%;
+  width: 33%;
+  top: 15em;
+  text-align: center;
+  background-color: lightblue;
+  height: 14em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+#unusedskillpoints{
+  padding-bottom: 0.5em;
+}
+.skill {
+  width: 100%;
+}
+.skill > .name {
+  width: 50%;
+  display: inline-block;
+}
+
+.skill > .minus, .skill > .plus {
+  width: 8.5%;
+  display: inline-block;
+
+  font-weight: bold;
+  border: 1px black solid;
+  margin-bottom: 0.5em;
+
+}
+
+.skill > .score {
+  display: inline-block;
+
+  width: 10%;
+}
+
+#pitch{
+  position: relative;
+  width: 90%;
+  top: 0;
+  left: 5%;
+  height: 15em;
+  background-color: #03AC13;
+  margin:0;
+  padding: 0;
+}
+
+#leftwicket {
+  position: absolute;
+  width: 4%;
+  height: 5vw;
+  margin:0;
+  top: 0;
+
+  padding: 0;
+}
+
+#rightwicket{
+  position: absolute;
+  left: 95%;
+  margin:0;
+  top: 0;
+  padding: 0;
+  width: 4%;
+  height: 5vw;
+}
+.batter {
+  position:absolute;
+  width: 21.8%;
+  top: 1vw;
+}
+
+.crease{
+  position:absolute;
+  background: white;
+  width: 0.25vw;
+  height: 96%;
+  top: 2%;
+}
+
+.green {
+  background: green;
+  position:absolute;
+
+  width: 100%;
+
+}
+
+#creasel{
+  left: 19%;
+
+}
+
+#creaser{
+  right: 19%;
+}
+
+
+#batter1{
+  z-index: 3;
+}
+#batter2{
+
+  left: 75%; 
+}
+
+#batterimg1{
+  max-width:100%;
+  max-height:100%;
+}
+
+#batterimg2{
+  max-width:100%;
+  max-height:100%;
+
+  transform: scaleX(-1);
+}
+
+.battername {
+  background: white;
+  display: inline-block;
+    border: 1px black solid;
+}
+
+.bowler{
+  width: 100%;
+}
+
+#bowlerr {
+  transform: scaleX(-1);
+}
+
+#buttons{
+  top: 18em;
+  font-family: bold;
+  left: 0;
+  width: 60%;
+  
+}
+
+button {
+  border: 3px black solid;
+}
+
+.run {
+  width: 100%;
+  font-size: 3em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+#hit {
+  background: #ffbf00;
+}
+
+#run {
+  background: #00FF00;
+}
+
+#runbar{
+  position:absolute;
+  top:0;
+  width: 100%;
+  height: 1em;
+  border: 1px transparent solid;
+}
+
+.runsegment{
+  position:absolute;
+  height: 45%;
+  background-color: blue;
+}
+.runsegmentp1{
+  background-color: #CDCDCD;
+  bottom: 0px;
+  height: 45%;
+}
+
+.runsegmentp0{
+  background-color: #7DF9FF;
+  top: 0px;
+}
+
+
+
+.hitsegment{
+  position:absolute;
+  top:1px;
+  background-color: green;
+  z-index: 2;
+  height: 100%;
+  width: 5px;
+}
+
+#run {
+  display: none;
+
+}
+
+#gym{
+  display:none;
+}
+
+.important{
+  color: red;
+}
+
+
+
+#nonplayerrun {
+  display: none;
+}
+
+#hit {
+  display: none;
+}
+
+.upgrade > span {
+  border: 1px black solid;
+  display:inline-block;
+  width: 1em;
+  height: 1em;
+}
+.upgrade > span:nth-of-type(1) {
+  background: red;
+}
+
+.ball {
+  width: 70%;
+  margin-top: 5%;
+  margin-left: 15%;
+  margin-bottom: 5%;
+  display: block;
+  fill: red;
+}
+#timerball {
+  position: absolute;
+  height: 100%;
+  top: 0;
+}
+
+.timerballsvg {
+  height: 100%;
+  fill: red;
+}
+
+#ballcounter {
+  width: 100%;
+  height: 10em;
+}
+
+
+#debug{
+  background: white;
+  z-index: 100;
+  display: block;
+}
+
+#robotlegs {
+  display: none;
+}
+
+#gamecontainer {
+  width: 100%;
+  position: relative;
+}
+
+#pitchtextcontainer {
+  position:relative;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  top: 30%;
+  z-index: 9;
+
+
+}
+#pitchtext {
+  text-align: center;
+  font-size: 2em;
+  font-weight: strong;
+  margin: auto;
+  color: lightgreen;
+  background-color: white;
+  border: 2px white solid;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For mobile phones: */
+  #gamecontainer {
+    width: 768px;
+    margin: 0 auto;
+
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#buyskill{
+  margin-bottom:0.75em;
+  border: 1px grey solid;
+  color: grey;
+  margin-left:5%;
+  width: 90%;
 }
 
-.App-link {
-  color: #61dafb;
+#pscore{
+  position: absolute;
+  color: lightgreen;
+  width: 100%;
+  font-size: 3em;
+  top: 75%;
+  font-weight: bold;
+  text-align: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#mainpscore{
+  position: absolute;
+  color: lightgreen;
+  width: 100%;
+  font-size: 2em;
+  top: 65%;
+  font-weight: bold;
+  text-align: center;
+}
+
+#runl {
+  width: 50%;
+}
+
+#runr {
+  width: 50%;
 }
