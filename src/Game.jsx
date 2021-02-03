@@ -13,11 +13,11 @@ const gameStates = {
   1: "ballhit",
   2: "ready2run",
   3: "running",
-  4: "endofball"
+  4: "endofball",
+  5: "out"
 }
-const initialData = () => {
-  if (!cookies.get("crickclick")) {
-    return {
+
+const blankData = {
       playerName: "You",
       lastAchievement: 0,
       batters: [
@@ -46,6 +46,7 @@ const initialData = () => {
       ianNo: 0,
       bowlDirection: 1,
       matchCount: 1,
+      outPlayer: null,
       overCount: 1,
       overRuns: 0,
       ballCount: 1,
@@ -57,6 +58,11 @@ const initialData = () => {
       totalPointsBought: 0,
       highScoreRuns: 0
     }
+
+
+const initialData = () => {
+  if (!cookies.get("crickclick")) {
+    return blankData
   } else {
     let gameData = cookies.get("crickclick")
     let batters = [
@@ -118,7 +124,6 @@ const Game = () => {
   const [gameData, setGameData] = useState(initialData());
   const [gameState, setGameState] = useState(0)
   const [selectedTab, setSelectedTab] = useState("tcommentary")
-
   const [commentaryUpdates,setCommentaryUpdates] = useState([])
 
   const timePerStep = 2000/16
@@ -147,15 +152,15 @@ const Game = () => {
   }
 
   const youreOut = (player) => {
+    setGameState(5)
     let newGameData = {runCount: 0}
+    newGameData.outPlayer = player
+
     if (player === 0) {
       commentaryUpdate("You are out.")
-      newGameData.overCount = 1
-      newGameData.ballCount = 0
-      newGameData.matchCount = gameData.matchCount + 1
+      
     } else {
       commentaryUpdate(ians[gameData.ianNo] + " is out.")
-      newGameData.ianNo = gameData.ianNo + 1
     }
 
    
@@ -169,9 +174,13 @@ const Game = () => {
     let newGameData = {timeLeft: timeLeft}
     let completeRuns
     cookies.set("crickclick",JSON.stringify(gameData))
+    if (gameState === 1) {
+      if (timeLeft <= 0) {
+        hitBall(0)
+      }
+    } else
     if (gameState === 2 || gameState === 3) {
       if (timeLeft <= 0) {
-        setGameState(4)
         completeRuns = gameData.batters.map( x => x.currentRuns.filter( f => f.complete ).length )
 
         if (!playerIsInGround(0) && !playerIsInGround(1)) {
@@ -188,12 +197,15 @@ const Game = () => {
            youreOut(completeRuns[0] < completeRuns[1] ? 0 : 1)
         }
         else {
+          setGameState(4)
+
           let runs = completeRuns.sort((a,b) =>  {return a - b} )[0]
           if (runs) {
             commentaryUpdate("You scored " + runs + " runs!")
             newGameData = {...newGameData,
               runCount: runs + gameData.runCount,
               totalRuns: runs + gameData.totalRuns,
+              highScoreRuns: runs + gameData.totalRuns > gameData.highScoreRuns ? runs + gameData.totalRuns : gameData.highScoreRuns,
               inBat: gameData.batters[0].end
             }
           }
@@ -228,17 +240,17 @@ const Game = () => {
   const goToNextBall = () => {
     
     setGameData(gameData => { 
+      let newGameData = {}
 
 
-
-      let newBallCount, newOverCount
       if (gameData.ballCount === 6) {
-        newBallCount = 1
-        newOverCount = gameData.overCount + 1
-
+        newGameData.ballCount = 1
+        newGameData.overCount = gameData.overCount + 1
+        newGameData.inBat = gameData.inBat ? 0 : 1
+        newGameData.bowlDirection = gameData.bowlDirection === -1 ? 1 : -1
       } else {
-        newBallCount = gameData.ballCount + 1
-        newOverCount = gameData.overCount
+        newGameData.ballCount = gameData.ballCount + 1
+        newGameData.overCount = gameData.overCount
       }
 
       
@@ -257,8 +269,8 @@ const Game = () => {
           currentRuns: [],
           direction: -1
         }]
-        batters = gameData.inBat ? batters.reverse() : batters
-      return {...gameData, batters: batters, ballCount: newBallCount, overCount: newOverCount}
+        newGameData.batters = gameData.inBat ? batters.reverse() : batters
+      return {...gameData, ...newGameData}
     })
   }
 
@@ -290,11 +302,7 @@ const Game = () => {
     })
   }
 
-  const addRuns = (gameData,runs) => {
-    gameData.runCount += runs
-    gameData.totalRuns += runs
-    return gameData
-  }
+
 
   const doRuns = (player,stepsPerRun,runTime) => {
     let runDistance = Math.ceil(1000/stepsPerRun)
@@ -347,18 +355,33 @@ const Game = () => {
   
 
   const hitBall = (player) => {
-      let newGameData = {
-        startTime: Date.now(),
-        timerLength: generateTimer(gameData.hittingForce)
-      }
 
-      setGameState(2)
-      if (gameData.inBat) {
+    let newGameData = {
+      startTime: Date.now(),
+    }
+    if (!gameData.inBat) {
+      if (gameData.timeLeft > 0 && gameData.timeLeft < 500) {
+        newGameData.timerLength = 3000 + Math.random() * 3000
+        commentaryUpdate("You've hit the ball, run?")
+      } else {
+        newGameData.timerLength = 500 + Math.random() * 2500
+        commentaryUpdate("You've missed the ball, run?")
+        
+      }
+    } else {
+      if (Math.random() > 0.25) {
+        newGameData.timerLength = 3000 + Math.random() * 3000
         commentaryUpdate(ians[gameData.ianNo] + "'s hit the ball, run?")
       } else {
-        commentaryUpdate("You've hit the ball, run?")
+        newGameData.timerLength = 500 + Math.random() * 2500
+        commentaryUpdate(ians[gameData.ianNo] + "'s missed the ball, run?")
       }
-      setGameData( gameData => { return {...gameData,...newGameData} })
+    }
+  
+
+    setGameState(2)
+  
+    setGameData( gameData => { return {...gameData,...newGameData} })
         
   }
 
@@ -378,8 +401,8 @@ const Game = () => {
     //let yPos = (e.clientY - bounds.Y)/e.target.clientHeight
     if (gameState === 0) {
       bowlBall()
-    }
-    if (gameState === 1) {
+    } else
+    if (gameState === 1 && gameData.inBat === 0) {
       hitBall(0)
     } else
     if (gameState === 2) {
@@ -387,11 +410,25 @@ const Game = () => {
       run(0,direction,timePerStep)
     } else
     if (gameState === 4) {
-     
-      
       setGameState(0)
       goToNextBall()
-    } 
+    } else
+    if (gameState === 5) {
+      let newGameData = {}
+
+      if (gameData.outPlayer === 0) {
+        newGameData.overCount = 1
+        newGameData.ballCount = 0
+        newGameData.inBat = 0
+        newGameData.ballDirection = 1
+        newGameData.matchCount = gameData.matchCount + 1
+      } else {
+        newGameData.ianNo = gameData.ianNo + 1
+      }
+      setGameData({...gameData,...newGameData})
+      setGameState(0)
+      goToNextBall()
+    }
 
   }
 
@@ -415,10 +452,16 @@ const Game = () => {
     }
   }
 
+  const resetGame = () => {
+    setGameState(0)
+    setGameData(blankData)
+    setCommentaryUpdates([])
+  }
+
   const closePaper = () => {
     setGameData(
       gameData => {return {
-        ...gameData, lastAchievement: gameData.lastAchievement + 1
+        ...gameData, lastAchievement: gameData.lastAchievement ? gameData.lastAchievement + 1 : 1
       } }
     )
   }
@@ -452,7 +495,7 @@ const Game = () => {
 
   
   
-  <button id="resetgame">RESET GAME</button>
+  <button onClick={resetGame} id="resetgame">RESET GAME</button>
   </>
 )
 }

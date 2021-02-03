@@ -7,12 +7,10 @@ return (
 <div id="commentary" className="tab">
 <div id="latest-update">{props.updates[0]}</div>
 <div id="history">{
-  props.updates.map((u,i) => { if (i > 0) {
-    return (<div key={i} className='old-comment'>{u}</div>)
-
-  }
-  })
-}</div>
+  props.updates.map((u,i) => { return i > 0 ? 
+     (<div key={i} className='old-comment'>{u}</div>) : null
+})}
+</div>
 </div>)
 }
 

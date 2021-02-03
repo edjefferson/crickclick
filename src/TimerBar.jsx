@@ -47,12 +47,12 @@ const TimerBar = (props) => {
   }
 
   return (
-    <div id="timercontainer">
+    <div id="timercontainer" style={{transform: "scaleX(" + props.gameData.bowlDirection + ")"}}>
       { props.gameState === 1 || props.gameState === 2 || props.gameState === 3? (<>
     <div id="timer" style={{width: 100 * props.gameData.timerLength/maxTimerWidth() + "%"}}>
       
       
-     { props.gameState < 2 ? <div id="timerball" style={{left: timerWidth() * 0.98 + "%"}}><svg className="timerballsvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+     { props.gameState < 2 ? <div id="timerball" style={{right: timerWidth() * 0.98 + "%"}}><svg className="timerballsvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="50"/>
         </svg></div> : <div id="timerbar" style={{width: timerWidth() + "%"}}></div>
       }

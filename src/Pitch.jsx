@@ -10,8 +10,11 @@ const Pitch = (props) => {
       if (props.gameState === 0) {
         return "CLICK TO RECIEVE BALL"
       } else
-      if (props.gameState === 1) {
+      if (props.gameState === 1 && !gameData.inBat) {
         return "CLICK TO HIT" 
+      } else 
+      if (props.gameState === 1 && gameData.inBat) {
+        return false
       }
       if (props.gameState === 2) {
         let larrow = "< "
@@ -23,6 +26,12 @@ const Pitch = (props) => {
       } else
       if (props.gameState === 4) {
         return "CLICK FOR NEXT BALL"
+      } else
+      if (props.gameState === 5 && !gameData.playerOut) {
+        return "YOU'RE OUT. CLICK FOR NEW MATCH."
+      } else
+      if (props.gameState === 5 && gameData.playerOut) {
+        return props.ianName + "'S OUT. CLICK FOR NEW PARTNER."
       }
   
     }
@@ -54,9 +63,9 @@ return   <>
 </div>
 
 <div id="pitch" style={{transform: "scaleX(" + gameData.bowlDirection + ")"}}>
-    <div id="mainpscore">{gameData.totalRuns}</div>
+    <div id="mainpscore"style={{transform: "scaleX(" + gameData.bowlDirection + ")"}} >{gameData.totalRuns}</div>
 
-    <div id="pscore">{gameData.runCount}</div>
+    <div id="pscore" style={{transform: "scaleX(" + gameData.bowlDirection + ")"}} >{gameData.runCount}</div>
     <div id="creasel" className="crease"></div>
     <div id="creaser" className="crease"></div>
     <div id="batter1" className="batter"style={getPlayerPos(0)}>
@@ -67,8 +76,8 @@ return   <>
         <div className="battername" id="ianname" style={{transform: "scaleX(" + gameData.bowlDirection + ")"}}>{props.ianName.toUpperCase()}</div>
         <img id="batterimg2" src={"runanim2/r" + getAnimationFrame(gameData.batters[1].pos) + ".svg"} alt="batsman 2" style={{transform: "scaleX(" + gameData.batters[1].direction + ")"}}/>
     </div>
-    <div id="pitchtextcontainer">
-    <div id="pitchtext">{clickText()}</div>
+    <div id="pitchtextcontainer" style={{ display: clickText() ? "block" : "none", transform: "scaleX(" + gameData.bowlDirection + ")"}}>
+    <div id="pitchtext" style={{ color: props.gameState === 5 ? "red" : "lightgreen" }}>{clickText()}</div>
     </div>
 </div>
 <div id="clickarea" onMouseDown={props.pitchClick}></div>

@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 
 const Paper = (props) => {
-  const [hidePaper,setHidePaper] = useState(props.hidePaper)
 
   const hideButtonClick = () => {
-    setHidePaper(true)
     props.closePaper()
   }
 
@@ -17,7 +15,7 @@ const Paper = (props) => {
       backgroundColor: "#fbfbf8",
       border: "1px #d7d7b8 solid",
       width: "100%",
-      display: hidePaper ? "none" : "block",
+      display: props.hidePaper ? "none" : "block",
     };
   }
 
@@ -81,7 +79,7 @@ const Paper = (props) => {
         backgroundColor: "lightgreen",
 
 
-      }}  src="player.svg" />
+      }} alt="player" src="player.svg" />
       <div>Everyone is so excited!</div>
       </div>
       <div
